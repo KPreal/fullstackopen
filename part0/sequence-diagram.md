@@ -4,6 +4,7 @@ sequenceDiagram
     participant server
 
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Note right of browser: Note that the server does not return anything following this request  
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
