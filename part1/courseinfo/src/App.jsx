@@ -11,9 +11,7 @@ const App = () => {
   return (
     <div>
       <Header course= {course} />
-      <Content exercise_name= {part1} num_exercises={exercises1}/>
-      <Content exercise_name= {part2} num_exercises={exercises2}/>
-      <Content exercise_name= {part3} num_exercises={exercises3}/>
+      <Content exercise_names= {[part1,part2,part3]} num_exercises={[exercises1,exercises2,exercises3]}/>
       <Total exercises= {[exercises1, exercises2, exercises3]}/>
     </div>
   )
@@ -24,9 +22,18 @@ const Header = (props) => {
 }
 
 const Content = (props) => {
-  return <p>{props.exercise_name} {props.num_exercises}</p>
+  return (
+    <div>
+      <Part part= {props.exercise_names[0]} exercises= {props.num_exercises[0]}/>
+      <Part part= {props.exercise_names[1]} exercises= {props.num_exercises[1]}/>
+      <Part part= {props.exercise_names[2]} exercises= {props.num_exercises[2]}/>
+    </div>
+  )
 }
 
+const Part = (props) => {
+  return <p>{props.part} {props.exercises}</p>
+}
 const Total = (props) => {
   console.log(props.exercises)
   const sum = props.exercises.reduce((a, b) => a + b, 0)
