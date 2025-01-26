@@ -32,12 +32,11 @@ const Content = (props) => {
   return (
     
     <div>
-      {
-      props.exercises.map(part => {
-        return (<Part part={part.name} exercises={part.exercises}/>)} )
-      }
-      
+      <Part part={props.exercises[0].name} exercises={props.exercises[0].exercises}/>
+      <Part part={props.exercises[1].name} exercises={props.exercises[1].exercises}/>
+      <Part part={props.exercises[2].name} exercises={props.exercises[2].exercises}/>
     </div>
+
 
   )
 }
