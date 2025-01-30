@@ -1,7 +1,21 @@
 import { useState } from 'react'
 
+const StatisticLine = ({text, value}) => {
+  if (text === 'positive') {
+    return(
+      <p>{text} {value} %</p>
+    )}
+  else {
+    return <p>{text} {value}</p>
+  }
+
+  
+  
+  
+}
+
 const Statistics = (props) => {
-  console.log(props)
+  //console.log(props)
   
   const good = props.unicafeStats[0]
   const neutral = props.unicafeStats[1]
@@ -27,12 +41,12 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {good + neutral + bad}</p>
-      <p>average {getAverage()}</p>
-      <p>positive {getPositivePercentage()} %</p>
+      <StatisticLine text="good" value ={good} />
+      <StatisticLine text="neutral" value ={neutral} />
+      <StatisticLine text="bad" value ={bad} />
+      <StatisticLine text="all" value ={good + neutral + bad} />
+      <StatisticLine text="average" value ={getAverage()} />
+      <StatisticLine text="positive" value ={getPositivePercentage()} />
     </div>
   )
   
