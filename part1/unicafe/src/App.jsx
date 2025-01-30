@@ -1,55 +1,68 @@
 import { useState } from 'react'
 
-const StatisticLine = ({text, value}) => {
+const StatisticLine = ({ text, value }) => {
   if (text === 'positive') {
-    return(
-      <p>{text} {value} %</p>
-    )}
+    return (
+      <tr>
+        <td>{text}</td>
+        <td>{value}%</td>
+      </tr>
+    )
+  }
   else {
-    return <p>{text} {value}</p>
+    return (
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
+    )
   }
 
-  
-  
-  
+
+
+
 }
 
 const Statistics = (props) => {
   //console.log(props)
-  
+
   const good = props.unicafeStats[0]
   const neutral = props.unicafeStats[1]
   const bad = props.unicafeStats[2]
 
-  
+
   const getAverage = () => (
-    (good - bad) / (good+neutral+bad)
+    (good - bad) / (good + neutral + bad)
   )
 
   const getPositivePercentage = () => (
-    (good / (good+neutral+bad)) * 100
+    (good / (good + neutral + bad)) * 100
   )
 
-  if (good===0 && bad===0 && neutral===0) {
-    return(
+  if (good === 0 && bad === 0 && neutral === 0) {
+    return (
       <div>
-      <h1>statistics</h1>
-      <p>No feedback given</p>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
       </div>
     )
   }
   return (
     <div>
       <h1>statistics</h1>
-      <StatisticLine text="good" value ={good} />
-      <StatisticLine text="neutral" value ={neutral} />
-      <StatisticLine text="bad" value ={bad} />
-      <StatisticLine text="all" value ={good + neutral + bad} />
-      <StatisticLine text="average" value ={getAverage()} />
-      <StatisticLine text="positive" value ={getPositivePercentage()} />
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="all" value={good + neutral + bad} />
+          <StatisticLine text="average" value={getAverage()} />
+          <StatisticLine text="positive" value={getPositivePercentage()} />
+        </tbody>
+      </table>
     </div>
   )
-  
+
 }
 
 const App = () => {
@@ -58,15 +71,15 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  
+
 
   return (
     <div>
       <h1>give feedback</h1>
-      <Button onClick={() => setGood(good + 1)} text="good"/>
-      <Button onClick={() => setNeutral(neutral + 1)} text="neutral"/>
-      <Button onClick={() => setBad(bad + 1)} text="bad"/> 
-      <Statistics unicafeStats={[good, neutral, bad]}/>
+      <Button onClick={() => setGood(good + 1)} text="good" />
+      <Button onClick={() => setNeutral(neutral + 1)} text="neutral" />
+      <Button onClick={() => setBad(bad + 1)} text="bad" />
+      <Statistics unicafeStats={[good, neutral, bad]} />
 
     </div>
   )
