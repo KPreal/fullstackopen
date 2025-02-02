@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client'
+
 import App from './App'
 
 const notes = [
@@ -22,6 +23,3 @@ const notes = [
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App notes={notes} />
 )
-const result = notes.map((note,i) => note.id===i+1)
-
-console.log(result)
