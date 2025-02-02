@@ -35,6 +35,7 @@ const Content = ({parts}) => (
         <li key={part.id}><Part part={part}/></li>
         ))}
     </ul>
+    <b>total of {parts.reduce((sum,part)=>(sum+=part.exercises),0)} exercises</b>
   </div>
 )
 
