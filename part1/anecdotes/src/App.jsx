@@ -16,7 +16,9 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const getRandomInt = (max) => {
-    return Math.floor(Math.random() * max);
+    const rand = Math.floor(Math.random() * max)
+    //console.log('getrand', rand)
+    return rand;
   }
 
 
@@ -34,7 +36,12 @@ const App = () => {
     Math.max(...votes)
   )
 
-  const nextAnecdote = getRandomInt(anecdotes.length)
+  const handleNextAnecdote = () => {
+    const nextAnecdote = getRandomInt(anecdotes.length)
+    //const n = nextAnecdote()
+    //console.log('nextAnecdote', nextAnecdote)
+    setSelected(nextAnecdote)
+  }
 
   return (
     <div>
@@ -42,7 +49,7 @@ const App = () => {
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <button onClick={voteSelected}>vote</button>
-      <button onClick={() => setSelected(nextAnecdote)}>next anecdote</button>
+      <button onClick={()=> handleNextAnecdote()}>next anecdote</button>
       <h1>Anecdote with most votes</h1>
       <p>{mostVotesAnecdote()}</p>
       <p>has {mostVotes()} votes</p>
