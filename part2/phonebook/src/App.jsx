@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,7 +11,6 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  //const [selected, setSelected] = useState(Array(persons.length).fill(true))
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -20,7 +20,6 @@ const App = () => {
       number: newNumber
     }
     const nameMatches = (person) => person.name === newName
-    //console.log(persons.some(nameMatches))
 
     if (persons.some(nameMatches)) {
       alert(`${newName} is already added to phonebook`)
@@ -37,17 +36,14 @@ const App = () => {
   }
 
   const handleFilterChange = (event) => {
+    console.log('handleFilterChange called')
     const newFilter = event.target.value
-    //console.log('event target value ', event.target.value)
     setFilter(newFilter)
-    //console.log('filter value', filter) //doesn't get updated yet?
-    //console.log(filter === event.target.value) // why false?
   }
 
   const getFilteredPersons = () => {
     //[true, false, false, true]
     const matching = persons.map((person) => person.name.toLowerCase().includes(filter))
-    //console.log(matching)
     const filtered = []
     
     for (let i = 0; i < persons.length; i++) {
@@ -57,17 +53,15 @@ const App = () => {
       }
       
     }
-    //console.log(filtered)
     return filtered;
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={filter} onChange={handleFilterChange} />
-      </div>
-      <h2>add a new</h2>
+      <Filter value={filter} onChange={handleFilterChange}/>
+
+      <h3>add a new</h3>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -79,11 +73,13 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
+      <h3>Numbers</h3>
       {getFilteredPersons().map((person) => <p key={person.id}>{person.name} {person.number}</p>)}
       
     </div>
   )
 }
+
+
 
 export default App
