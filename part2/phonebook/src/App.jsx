@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Filter from './components/Filter'
+//import PersonForm from './components/PersonForm'
+import Person from './components/Person'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -36,7 +38,8 @@ const App = () => {
   }
 
   const handleFilterChange = (event) => {
-    console.log('handleFilterChange called')
+    event.preventDefault()
+    console.log('handleFilterChange called', event)
     const newFilter = event.target.value
     setFilter(newFilter)
   }
@@ -45,13 +48,13 @@ const App = () => {
     //[true, false, false, true]
     const matching = persons.map((person) => person.name.toLowerCase().includes(filter))
     const filtered = []
-    
+
     for (let i = 0; i < persons.length; i++) {
       const person = persons[i]
       if (matching[i] === true) {
         filtered.push(person)
       }
-      
+
     }
     return filtered;
   }
@@ -59,8 +62,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter value={filter} onChange={handleFilterChange}/>
-
+      <Filter value={filter} onChange={handleFilterChange} />
+      
       <h3>add a new</h3>
       <form onSubmit={addPerson}>
         <div>
@@ -73,9 +76,11 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+
       <h3>Numbers</h3>
-      {getFilteredPersons().map((person) => <p key={person.id}>{person.name} {person.number}</p>)}
-      
+      {getFilteredPersons().map((person) =>
+        <Person key={person.id} name={person.name} number={person.number} />)}
+
     </div>
   )
 }

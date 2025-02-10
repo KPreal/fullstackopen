@@ -1,9 +1,13 @@
 const Filter = (props) => {
-
-    console.log('filter props',props)
     return (
-        <div>filter shown with <input value={props.filter} onChange={props.handleFilterChange}/>
+    <form>
+        <div>
+            filter shown with 
+            <input value={props.filter} onChange={props.onChange} />
         </div>
-    )
-}
-export default Filter
+    </form>
+    );
+  };
+  
+  export default Filter;
+  
