@@ -28,8 +28,14 @@ const App = () => {
     if (persons.some(nameMatches)) {
       alert(`${newPerson.name} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(newPerson))
-      setNewPerson({ name: '', number: '', id: '' }); // Reset the form
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          //setPersons(persons.concat(newPerson))
+          setPersons(persons.concat(response.data))
+          setNewPerson({ name: '', number: ''}); // Reset the form
+        })
+
     }
   }
 
@@ -39,11 +45,11 @@ const App = () => {
     const { name, value } = event.target;
 
     console.log(name, value)
-    
+
     const updatedPerson = {
       name: newPerson.name,
       number: newPerson.number,
-      id: newPerson.name
+      //id: newPerson.name
     };
 
     updatedPerson[name] = value;
@@ -80,12 +86,12 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter value={filter} onChange={handleFilterChange} />
 
-      <h3>add a new</h3> 
+      <h3>add a new</h3>
       <PersonForm
         onSubmit={addPerson}
         newPerson={newPerson}
         handleFormChange={handleFormChange}
-      /> 
+      />
 
       <h3>Numbers</h3>
       <PersonsList getFilteredPersons={getFilteredPersons} />
