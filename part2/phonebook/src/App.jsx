@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonsList from './components/PersonsList'
+import personService from './services/persons'
 import axios from 'axios'
 
 const App = () => {
@@ -10,10 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll() //already returns response.data
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }
   useEffect(hook, [])
@@ -28,12 +29,12 @@ const App = () => {
     if (persons.some(nameMatches)) {
       alert(`${newPerson.name} is already added to phonebook`)
     } else {
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then(response => {
+      personService
+        .create(newPerson)
+        .then(returnedPerson => {
           //setPersons(persons.concat(newPerson))
-          setPersons(persons.concat(response.data))
-          setNewPerson({ name: '', number: ''}); // Reset the form
+          setPersons(persons.concat(returnedPerson))
+          setNewPerson({ name: '', number: '' }); // Reset the form
         })
 
     }
