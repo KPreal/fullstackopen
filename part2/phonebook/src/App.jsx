@@ -3,7 +3,6 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonsList from './components/PersonsList'
 import personService from './services/persons'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -22,7 +21,7 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    console.log("newperson", newPerson)
+    //console.log("newperson", newPerson)
 
     const nameMatches = (person) => person.name === newPerson.name.trim()
 
@@ -40,12 +39,22 @@ const App = () => {
     }
   }
 
+  const removePerson = (id) => {
+    //console.log(id)
+    //console.log(personService.remove(id))
+    personService
+      .remove(id)
+      .then((deletedPerson) => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+  }
+
   const handleFormChange = (event) => {
     event.preventDefault()
     //name is 'name' or 'number', value is from field value
     const { name, value } = event.target;
 
-    console.log(name, value)
+    //console.log(name, value)
 
     const updatedPerson = {
       name: newPerson.name,
@@ -95,7 +104,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <PersonsList getFilteredPersons={getFilteredPersons} />
+      <PersonsList getFilteredPersons={getFilteredPersons} removePerson={removePerson} />
 
     </div>
   )
