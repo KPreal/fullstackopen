@@ -21,17 +21,25 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    //console.log("newperson", newPerson)
+    const nameMatches = (person) =>
+      person.name.trim().toLowerCase() === newPerson.name.trim().toLowerCase()
+    const match = persons.find(nameMatches)
 
-    const nameMatches = (person) => person.name === newPerson.name.trim()
-
-    if (persons.some(nameMatches)) {
-      alert(`${newPerson.name} is already added to phonebook`)
+    if (match) { //not undefined
+      console.log('person found')
+      if (confirm(`Do you want to update ${match.name} with a new number?`)) {
+        const updatedPerson = { ...newPerson, id: match.id };
+        personService
+          .update(match.id, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== match.id ? person : returnedPerson))
+            setNewPerson({ name: '', number: '' })
+          })
+      }
     } else {
       personService
         .create(newPerson)
         .then(returnedPerson => {
-          //setPersons(persons.concat(newPerson))
           setPersons(persons.concat(returnedPerson))
           setNewPerson({ name: '', number: '' }); // Reset the form
         })
@@ -44,7 +52,7 @@ const App = () => {
     //console.log(personService.remove(id))
     personService
       .remove(id)
-      .then((deletedPerson) => {
+      .then((/*deletedPerson*/) => {
         setPersons(persons.filter(person => person.id !== id))
       })
   }
@@ -77,7 +85,6 @@ const App = () => {
 
   const getFilteredPersons = () => {
     //[true, false, false, true]
-
     const matching = persons.map((person) => person.name.toLowerCase().includes(filter))
     const filtered = []
 
