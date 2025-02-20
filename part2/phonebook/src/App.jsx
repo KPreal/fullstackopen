@@ -25,17 +25,17 @@ const App = () => {
       person.name.trim().toLowerCase() === newPerson.name.trim().toLowerCase()
     const match = persons.find(nameMatches)
 
-    if (match) { //not undefined
+    if (match && confirm(`Do you want to update ${match.name} with a new number?`)) { //not undefined
       console.log('person found')
-      if (confirm(`Do you want to update ${match.name} with a new number?`)) {
-        const updatedPerson = { ...newPerson, id: match.id };
-        personService
-          .update(match.id, updatedPerson)
-          .then(returnedPerson => {
-            setPersons(persons.map(person => person.id !== match.id ? person : returnedPerson))
-            setNewPerson({ name: '', number: '' })
-          })
-      }
+
+      const updatedPerson = { ...newPerson, id: match.id };
+      personService
+        .update(match.id, updatedPerson)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== match.id ? person : returnedPerson))
+          setNewPerson({ name: '', number: '' })
+        })
+
     } else {
       personService
         .create(newPerson)
