@@ -58,6 +58,18 @@ const App = () => {
           setPersons(persons.map(person => person.id !== match.id ? person : returnedPerson))
           setNewPerson({ name: '', number: '' })
         })
+        .catch((/* error */) => {
+          setNotification(
+            {
+              text: `Person ${match.name} was already deleted from the server`,
+              type: 'remove'
+            }
+          )
+          setTimeout(() => {
+            setNotification({text: null, type: null})
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== match.id))
+        })
 
     }
   }
@@ -124,7 +136,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       {/* ${console.log(notification)} */}
-      <Notification notification={{text: notification.text,type: notification.type}} />
+      <Notification notification={{ text: notification.text, type: notification.type }} />
 
       <Filter value={filter} onChange={handleFilterChange} />
 
