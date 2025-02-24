@@ -3,11 +3,13 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonsList from './components/PersonsList'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState({ name: '', number: '', id: '' })
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState({ text: null, type: null })
 
   const hook = () => {
     personService
@@ -25,6 +27,27 @@ const App = () => {
       person.name.trim().toLowerCase() === newPerson.name.trim().toLowerCase()
     const match = persons.find(nameMatches)
 
+    if (!match) {
+
+      personService
+        .create(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewPerson({ name: '', number: '' }); // Reset the form
+        })
+
+      setNotification(
+        {
+          text: `Added '${newPerson.name}' `,
+          type: 'add'
+        }
+      )
+      setTimeout(() => {
+        setNotification({ text: null, type: null })
+      }, 5000)
+
+    }
+
     if (match && confirm(`Do you want to update ${match.name} with a new number?`)) { //not undefined
       console.log('person found')
 
@@ -36,24 +59,23 @@ const App = () => {
           setNewPerson({ name: '', number: '' })
         })
 
-    } else {
-      personService
-        .create(newPerson)
-        .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setNewPerson({ name: '', number: '' }); // Reset the form
-        })
-
     }
   }
 
   const removePerson = (id) => {
-    //console.log(id)
-    //console.log(personService.remove(id))
     personService
       .remove(id)
-      .then((/*deletedPerson*/) => {
+      .then((deletedPerson) => {
         setPersons(persons.filter(person => person.id !== id))
+
+        setNotification({
+          text: `Removed '${deletedPerson.name}' `,
+          type: 'remove'
+        })
+        setTimeout(() => {
+          setNotification({ text: null, type: null })
+        }, 5000)
+
       })
   }
 
@@ -101,6 +123,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {/* ${console.log(notification)} */}
+      <Notification notification={{text: notification.text,type: notification.type}} />
+
       <Filter value={filter} onChange={handleFilterChange} />
 
       <h3>add a new</h3>
