@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import CountryList from './components/CountryList'
+import Filter from './components/Filter'
 
 const App = () => {
 
@@ -16,15 +17,28 @@ const App = () => {
     }
     useEffect(hook, [])
 
+    if (countries.length === 0) {
+        return null
+    }
+
+    const handleFilterChange = (event) => {
+        const newFilter = event.target.value
+        setFilter(newFilter)
+    }
+
     const getFilteredCountries = () => {
-        /* const matching = countries.map((country) =>
-            country.name.common.toLowerCase().includes(filter))
-        const filtered = [] */
-        return countries[0]
+        if (filter === '') {
+            return []
+        }
+        const filteredCountries = countries.filter(country =>
+            country.name.common.toLowerCase().includes(filter.toLowerCase())
+        
+        );
+        return filteredCountries.slice(0,10)
     }
     return (
         <div>
-            find countries <input defaultValue={"Finland"} />
+            <Filter value={filter} onChange={handleFilterChange} />
             <CountryList getFilteredCountries={getFilteredCountries} />
         </div>
     )
